@@ -1,0 +1,16 @@
+[Unit]
+Description=Hostel Hub Streamlit Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/hostel_hub
+ExecStart=/home/ec2-user/hostel_hub/venv/bin/streamlit run app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+Restart=always
+RestartSec=5
+Environment=PATH=/home/ec2-user/hostel_hub/venv/bin:/usr/bin:/bin
+Environment=STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+
+[Install]
+WantedBy=multi-user.target
