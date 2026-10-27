@@ -11,15 +11,14 @@ def render_complaints():
 
     with get_db_session() as db:
         students = db.query(Student).order_by(Student.name.asc()).all()
+        student_choices = {
+            f"{s.name} ({s.course} · Room {s.room_number or 'N/A'})": s.id
+            for s in students
+        }
 
-    if not students:
+    if not student_choices:
         st.info("Please register students first.")
         return
-
-    student_choices = {
-        f"{s.name} ({s.course} · Room {s.room_number or 'N/A'})": s.id
-        for s in students
-    }
 
     tab_log, tab_manage = st.tabs(["➕ Submit New Complaint / Ticket", "⚙️ Manage & Resolve Open Tickets"])
 
