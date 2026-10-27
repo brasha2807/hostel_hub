@@ -9,11 +9,16 @@ services:
     restart: unless-stopped
     ports:
       - "8501:8501"
+    env_file:
+      - path: ../.env
+        required: false
     environment:
-      - APP_ENV=production
-      - AWS_REGION=ap-south-1
-      - AWS_DEFAULT_REGION=ap-south-1
-      - AWS_S3_BUCKET_NAME=hostelhub-media-474333173964
+      - APP_ENV=${APP_ENV:-production}
+      - AWS_REGION=${AWS_REGION:-ap-south-1}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-ap-south-1}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME:-hostelhub-media-474333173964}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
     volumes:
       # Persist SQLite database and static uploads on host
       - ../hostel_hub.db:/app/hostel_hub.db

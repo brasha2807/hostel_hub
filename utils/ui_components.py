@@ -12,25 +12,25 @@ def inject_custom_css(bg_clarity="Vivid (Recommended)", bg_image_uri=""):
     """
     # Dynamic opacity presets based on user's clarity preference
     if bg_clarity == "Crystal Clear":
-        overlay = "rgba(11, 19, 43, 0.25)"
-        card_bg = "rgba(15, 23, 42, 0.75)"
+        overlay = "rgba(8, 13, 26, 0.48)"
+        card_bg = "rgba(15, 23, 42, 0.82)"
         card_border = "rgba(255, 255, 255, 0.18)"
         blur_val = "16px"
     elif bg_clarity == "Vivid (Recommended)":
-        overlay = "rgba(11, 19, 43, 0.55)"
-        card_bg = "rgba(15, 23, 42, 0.82)"
-        card_border = "rgba(255, 255, 255, 0.14)"
+        overlay = "rgba(8, 13, 26, 0.72)"
+        card_bg = "rgba(15, 23, 42, 0.88)"
+        card_border = "rgba(255, 255, 255, 0.15)"
         blur_val = "20px"
     elif bg_clarity == "Soft Tint":
-        overlay = "rgba(11, 19, 43, 0.78)"
-        card_bg = "rgba(15, 23, 42, 0.90)"
+        overlay = "rgba(8, 13, 26, 0.85)"
+        card_bg = "rgba(15, 23, 42, 0.92)"
         card_border = "rgba(255, 255, 255, 0.10)"
-        blur_val = "12px"
+        blur_val = "14px"
     else:  # Muted
-        overlay = "rgba(11, 19, 43, 0.92)"
+        overlay = "rgba(8, 13, 26, 0.95)"
         card_bg = "rgba(15, 23, 42, 0.96)"
         card_border = "rgba(255, 255, 255, 0.08)"
-        blur_val = "8px"
+        blur_val = "10px"
 
     css = f"""
     <style>
@@ -48,19 +48,57 @@ def inject_custom_css(bg_clarity="Vivid (Recommended)", bg_image_uri=""):
         --card-border: {card_border};
         --card-blur: {blur_val};
         --text-pure: #F8FAFC;
-        --text-sub: #94A3B8;
-        --text-muted: #64748B;
+        --text-sub: #CBD5E1;
+        --text-muted: #94A3B8;
     }}
 
     html, body, [class*="css"] {{
         font-family: var(--font-main);
-        color: var(--text-pure);
+        color: var(--text-pure) !important;
     }}
 
-    h1, h2, h3, h4, h5, h6 {{
+    /* STREAMLIT TOP HEADER FIX: REMOVE GLARING WHITE BAR */
+    header[data-testid="stHeader"],
+    .stApp > header {{
+        background: rgba(8, 13, 26, 0.80) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }}
+
+    header[data-testid="stHeader"] svg,
+    header[data-testid="stHeader"] button {{
+        color: #F8FAFC !important;
+        fill: #F8FAFC !important;
+    }}
+
+    /* HEADINGS: ALWAYS PURE VIVID WHITE WITH CRISP CONTRAST */
+    h1, h2, h3, h4, h5, h6,
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3,
+    [data-testid="stMarkdownContainer"] h4,
+    [data-testid="stMarkdownContainer"] h5,
+    [data-testid="stMarkdownContainer"] h6 {{
         font-family: var(--font-heading) !important;
         letter-spacing: -0.02em;
-        font-weight: 750 !important;
+        font-weight: 800 !important;
+        color: #FFFFFF !important;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
+    }}
+
+    /* BODY PARAGRAPHS & LABELS */
+    p, span, label,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] span {{
+        color: #E2E8F0 !important;
+    }}
+
+    [data-testid="stCaptionContainer"],
+    [data-testid="stCaptionContainer"] p,
+    .stCaption {{
+        color: #94A3B8 !important;
+        font-size: 13px !important;
     }}
 
     /* GLOBAL APP BACKGROUND WITH FROSTED LUXURY ATMOSPHERE */
@@ -70,6 +108,7 @@ def inject_custom_css(bg_clarity="Vivid (Recommended)", bg_image_uri=""):
         background-position: center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
+        color: #F8FAFC !important;
     }}
 
     .block-container {{
@@ -141,6 +180,23 @@ def inject_custom_css(bg_clarity="Vivid (Recommended)", bg_image_uri=""):
         border-radius: 18px !important;
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25) !important;
         transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    }}
+
+    [data-testid="stExpander"] details summary {{
+        color: #F8FAFC !important;
+        font-weight: 700 !important;
+        background: rgba(15, 23, 42, 0.65) !important;
+        border-radius: 14px !important;
+    }}
+
+    [data-testid="stExpander"] details summary p,
+    [data-testid="stExpander"] details summary span {{
+        color: #F8FAFC !important;
+        font-weight: 700 !important;
+    }}
+
+    [data-testid="stExpander"] details summary svg {{
+        fill: #38BDF8 !important;
     }}
 
     /* AWWWARDS EXECUTIVE HERO BANNER */

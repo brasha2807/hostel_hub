@@ -36,8 +36,9 @@ This guide provides end-to-end instructions for deploying the **Hostel Hub** app
 3. **Name**: `hostel-hub-production`
 4. **OS Image (AMI)**: Select **Ubuntu 24.04 LTS (HVM)** or **Amazon Linux 2023**.
 5. **Instance Type**:
-   - **Recommended**: `t3.small` (2 vCPU, 2 GiB RAM) — Ideal for smooth video streaming and concurrent student portals.
-   - **Free-Tier Eligible**: `t2.micro` or `t3.micro` (1 GiB RAM) — Works well with swap enabled.
+   - **Best Choice for Your Account**: **`t2.micro`** or **`t3.micro`** (1 vCPU, 1 GiB RAM) — **Free-Tier Eligible** & matches the default 1 vCPU limit.
+   - *(Note: If you selected `t3.small`, AWS will return a vCPU quota error because your account is set to 1 vCPU. Use `t2.micro` or `t3.micro` to launch immediately! Our deployment script automatically activates a 2GB swap space for flawless stability).*
+   - If you ever need `t3.small` (2 vCPU) later, click **Request quota increase** in the AWS console.
 6. **Key Pair**: Select or create an SSH key pair (e.g. `hostelhub-key.pem`) and download it.
 7. **Network Settings / Security Group**:
    Create a new Security Group with the following inbound rules:
@@ -67,13 +68,27 @@ To allow your EC2 instance to upload student photos, videos, and database backup
 
 ## 💻 Step 3: Connect to your EC2 Instance
 
-Open PowerShell or Terminal on your local machine:
+### On Windows PowerShell:
 
 ```powershell
-# Set correct permissions on your key pair
-chmod 400 hostelhub-key.pem
+# 1. Navigate to the folder where you saved the key (e.g. Downloads)
+cd ~/Downloads
 
-# SSH into the EC2 instance (replace with your EC2 Public IP)
+# 2. Reset permissions and grant read-only access to your user
+icacls.exe hostelhub-key.pem /reset
+icacls.exe hostelhub-key.pem /grant:r "$($env:USERNAME):(R)"
+icacls.exe hostelhub-key.pem /inheritance:r
+
+# 3. Connect via SSH (replace with your EC2 Public IP)
+ssh -i .\hostelhub-key.pem ubuntu@<YOUR-EC2-PUBLIC-IP>
+```
+
+*(Note: If you launched **Amazon Linux 2023**, replace `ubuntu@` with `ec2-user@`)*
+
+### On Linux, macOS, or Git Bash:
+
+```bash
+chmod 400 hostelhub-key.pem
 ssh -i "hostelhub-key.pem" ubuntu@<YOUR-EC2-PUBLIC-IP>
 ```
 

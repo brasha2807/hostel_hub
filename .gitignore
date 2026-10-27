@@ -19,7 +19,8 @@ archive/
 *.bak
 
 # Streamlit Local Cache
-.streamlit/
+.streamlit/*
+!.streamlit/config.toml
 
 # OS specific
 Thumbs.db
